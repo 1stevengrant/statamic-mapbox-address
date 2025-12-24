@@ -15,6 +15,10 @@ class ServiceProvider extends AddonServiceProvider
         __DIR__.'/../dist/js/address.js',
     ];
 
+    protected $stylesheets = [
+        __DIR__.'/../dist/js/style.css',
+    ];
+
     public function register()
     {
         $this->mergeConfigFrom(
