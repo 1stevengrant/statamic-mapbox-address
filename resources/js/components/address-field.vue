@@ -12,7 +12,7 @@
     </div>
     <div v-else>
         <v-select
-            :modelValue="modelValue"
+            :modelValue="value"
             :filterable="false"
             :options="options"
             :placeholder="config.placeholder"
@@ -39,70 +39,68 @@
     </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
+<script setup>
+import { ref, computed } from 'vue';
 import vSelect from 'vue-select';
 import debounce from 'lodash.debounce';
 import mbxClient from '@mapbox/mapbox-sdk';
 import geoService from '@mapbox/mapbox-sdk/services/geocoding';
 
-export default defineComponent({
-    mixins: [Statamic.FieldtypeMixin],
-
-    components: {
-        vSelect,
-    },
-
-    data() {
-        return {
-            options: [],
-        };
-    },
-
-    computed: {
-        geoClient() {
-            if (!this.meta.mapboxApiKey) return null;
-            return geoService(mbxClient({ accessToken: this.meta.mapboxApiKey }));
-        },
-        error() {
-            return {
-                key: !this.meta.mapboxApiKey,
-            };
-        },
-    },
-
-    methods: {
-        setSelected(value) {
-            this.update(value);
-        },
-        onSearch(search, loading) {
-            if (search.length) {
-                loading(true);
-                this.search(loading, search);
-            }
-        },
-        search: debounce(function(loading, search) {
-            if (!this.geoClient) return;
-            this.geoClient
-                .forwardGeocode({
-                    query: search,
-                    limit: 10,
-                    autocomplete: true,
-                    language: this.config.language,
-                    countries: this.config.countries,
-                    types: this.config.featureTypes,
-                })
-                .send()
-                .then((response) => {
-                    const match = response.body;
-                    this.options = match.features;
-                })
-                .finally(() => {
-                    loading(false);
-                });
-        }, 350),
-    },
+const props = defineProps({
+    value: { default: null },
+    meta: { type: Object, default: () => ({}) },
+    config: { type: Object, default: () => ({}) },
 });
+
+const emit = defineEmits(['update:value', 'meta-updated']);
+
+const options = ref([]);
+
+const geoClient = computed(() => {
+    if (!props.meta.mapboxApiKey) {
+        return null;
+    }
+
+    return geoService(mbxClient({ accessToken: props.meta.mapboxApiKey }));
+});
+
+const error = computed(() => ({
+    key: !props.meta.mapboxApiKey,
+}));
+
+function setSelected(val) {
+    emit('update:value', val);
+}
+
+const search = debounce(function (loading, query) {
+    if (!geoClient.value) {
+        return;
+    }
+
+    geoClient.value
+        .forwardGeocode({
+            query,
+            limit: 10,
+            autocomplete: true,
+            language: props.config.language,
+            countries: props.config.countries,
+            types: props.config.featureTypes,
+        })
+        .send()
+        .then((response) => {
+            options.value = response.body.features;
+        })
+        .finally(() => {
+            loading(false);
+        });
+}, 350);
+
+function onSearch(searchTerm, loading) {
+    if (searchTerm.length) {
+        loading(true);
+        search(loading, searchTerm);
+    }
+}
 </script>
 
 <style>

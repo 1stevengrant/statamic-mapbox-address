@@ -9,15 +9,15 @@ export default defineConfig({
             entry: 'resources/js/address.js',
             name: 'StatamicMapboxAddress',
             fileName: () => 'address.js',
-            formats: ['iife']
+            formats: ['iife'],
         },
         rollupOptions: {
             external: ['vue'],
             output: {
                 globals: {
-                    vue: 'Vue'
-                }
-            }
-        }
-    }
+                    vue: 'Vue',
+                },
+            },
+        },
+    },
 });

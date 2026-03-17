@@ -1,6 +1,6 @@
-# Mattrothenberg\StatamicMapboxAddress
+# Statamic Mapbox Address
 
-An address Autocomplete Field for Statamic V3, powered by [Mapbox](https://docs.mapbox.com/api/search/geocoding/).
+An address Autocomplete Field for Statamic v6, powered by [Mapbox](https://docs.mapbox.com/api/search/geocoding/).
 
 ![Cover Image](https://user-images.githubusercontent.com/5148596/111149875-cea35800-8563-11eb-9f3c-b4e4aafaf1ca.png)
 
@@ -9,7 +9,7 @@ An address Autocomplete Field for Statamic V3, powered by [Mapbox](https://docs.
 Add the addon to your project via `composer`.
 
 ```bash
-composer require mattrothenberg/statamic-mapbox-address
+composer require ghijk/statamic-mapbox-address
 ```
 
 Make sure to add the following environment variable, since this library uses [Mapbox](https://docs.mapbox.com/api/search/geocoding/) under the hood for address autocompletion. The addon **will not work** without a valid key.
@@ -22,14 +22,12 @@ MAPBOX_API_KEY=""
 
 Currently, only a few configuration options are supported, although [Mapbox's forward geocoding API exposes a variety of settings.](https://github.com/mapbox/mapbox-sdk-js/blob/main/docs/services.md#forwardgeocode).
 
-- `placeholder (string>)`: Placeholder text for the rendered picker.
+- `placeholder (string)`: Placeholder text for the rendered picker.
 - `countries (Array<string>)`: Limits results to the specified countries. Each item in the array should be an ISO 3166 alpha 2 country code.
-- `featureTypes ("country" | "region" | "postcode" | "district" | "place" | "locality" | "neighborhood" | "address" | "poi" | "poi.landmark"):`: Filter results by feature types
+- `featureTypes ("country" | "region" | "postcode" | "district" | "place" | "locality" | "neighborhood" | "address" | "poi" | "poi.landmark")`: Filter results by feature types.
 - `language (Array<string>)`: Specify the language to use for response text and, for forward geocoding, query result weighting. Options are IETF language tags comprised of a mandatory ISO 639-1 language code and optionally one or more IETF subtags for country or script.
 
 <img width="734" alt="Screen Shot 2021-03-15 at 7 45 53 AM" src="https://user-images.githubusercontent.com/5148596/111150336-5a1ce900-8564-11eb-8142-526809222a96.png">
-
-Please feel free to submit a pull request if you'd like to add other settings to the configuration screen.
 
 ## Serialization
 
@@ -73,5 +71,3 @@ address:
       short_code: us
       text: "United States"
 ```
-
-Please feel free to submit a pull request if you'd like to modify or improve this very basic serialization schema.

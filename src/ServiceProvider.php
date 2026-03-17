@@ -1,8 +1,8 @@
 <?php
 
-namespace Mattrothenberg\StatamicMapboxAddress;
+namespace Ghijk\StatamicMapboxAddress;
 
-use Mattrothenberg\StatamicMapboxAddress\Fieldtypes\Address;
+use Ghijk\StatamicMapboxAddress\Fieldtypes\Address;
 use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
@@ -19,7 +19,7 @@ class ServiceProvider extends AddonServiceProvider
         __DIR__.'/../dist/js/style.css',
     ];
 
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             __DIR__.'/../config/mapbox.php', 'mapbox'

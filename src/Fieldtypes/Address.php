@@ -1,10 +1,9 @@
 <?php
 
-namespace Mattrothenberg\StatamicMapboxAddress\Fieldtypes;
+namespace Ghijk\StatamicMapboxAddress\Fieldtypes;
 
-use Statamic\Facades\Antlers;
-use Statamic\Fields\Fieldtype;
 use Statamic\Facades\GraphQL;
+use Statamic\Fields\Fieldtype;
 use Statamic\GraphQL\Types\ArrayType;
 
 class Address extends Fieldtype
@@ -33,8 +32,8 @@ class Address extends Fieldtype
                     'locality' => 'Locality',
                     'neighborhood' => 'Neighborhood',
                     'address' => 'Address',
-                    'poi' => 'POI', 
-                    'poi.landmark' => 'POI (landmark)'
+                    'poi' => 'POI',
+                    'poi.landmark' => 'POI (landmark)',
                 ],
                 'default' => 'address',
             ],
@@ -49,55 +48,18 @@ class Address extends Fieldtype
                 'display' => __('Language'),
                 'instructions' => __('Specify the language to use for response text and, for forward geocoding, query result weighting. Options are IETF language tags comprised of a mandatory ISO 639-1 language code and optionally one or more IETF subtags for country or script.'),
                 'width' => 50,
-                'default' => ['en']
-            ]
+                'default' => ['en'],
+            ],
         ];
     }
 
-    public function preload()
+    public function preload(): array
     {
         return [
-            'mapboxApiKey' => config('mapbox.api_key')
+            'mapboxApiKey' => config('mapbox.api_key'),
         ];
     }
 
-    /**
-     * The blank/default value
-     *
-     * @return array
-     */
-    public function defaultValue()
-    {
-        return null;
-    }
-
-    /**
-     * Pre-process the data before it gets sent to the publish page
-     *
-     * @param mixed $data
-     * @return array|mixed
-     */
-    public function preProcess($data)
-    {
-        return $data;
-    }
-
-    /**
-     * Process the data before it gets saved
-     *
-     * @param mixed $data
-     * @return array|mixed
-     */
-    public function process($data)
-    {
-        return $data;
-    }
-
-    /**
-     * Get the GraphQL type that should be used for processing
-     *
-     * @return \GraphQL\Type\Definition\Type
-     */
     public function toGqlType()
     {
         return GraphQL::type(ArrayType::NAME);
